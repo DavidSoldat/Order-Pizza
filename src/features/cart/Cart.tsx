@@ -1,44 +1,36 @@
-import { Link } from "react-router-dom";
-import LinkButton from "../../ui/LinkButton";
-import Button from "../../ui/Button";
-const fakeCart = [
-  {
-    pizzaId: 12,
-    name: "Mediterranean",
-    quantity: 2,
-    unitPrice: 16,
-    totalPrice: 32,
-  },
-  {
-    pizzaId: 6,
-    name: "Vegetale",
-    quantity: 1,
-    unitPrice: 13,
-    totalPrice: 13,
-  },
-  {
-    pizzaId: 11,
-    name: "Spinach and Mushroom",
-    quantity: 1,
-    unitPrice: 15,
-    totalPrice: 15,
-  },
-];
+import LinkButton from '../../ui/LinkButton';
+import Button from '../../ui/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { State } from '../user/Username';
+import { CartItemType, clearCart, getCart } from './cartSlice';
+import CartItem from './CartItem';
+import EmptyCart from './EmptyCart';
 
 function Cart() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const cart = fakeCart;
+  const cart = useSelector(getCart);
+  const username = useSelector((state: State) => state.user.username);
+  const dispatch = useDispatch();
 
+  if (!cart.length) return <EmptyCart />;
   return (
-    <div>
+    <div className="px-4 py-3">
       <LinkButton to="/menu">&larr; Back to menu</LinkButton>
 
-      <h2>Your cart, %NAME%</h2>
+      <h2 className="mt-7 text-xl font-semibold">Your cart, {username}</h2>
+      <ul className="mt-3 divide-y divide-stone-200 border-b">
+        {cart.map((item: CartItemType) => (
+          <CartItem item={item} key={item.pizzaId} />
+        ))}
+      </ul>
 
-      <div>
-        <Button to="/order/new">Order pizzas</Button>
-        <Link to="/order/new">Order pizzas</Link>
-        <button>Clear cart</button>
+      <div className="mt-6 space-x-2">
+        <Button type="primary" to="/order/new">
+          Order pizzas
+        </Button>
+        <Button type="secondary" onClick={() => dispatch(clearCart())}>
+          Clear cart
+        </Button>
       </div>
     </div>
   );
