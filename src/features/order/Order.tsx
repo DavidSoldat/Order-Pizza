@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // Test ID: IIDSAT
 
-import { LoaderFunction, useLoaderData } from 'react-router-dom';
+import { LoaderFunction, useFetcher, useLoaderData } from 'react-router-dom';
 import { getOrder } from '../../services/apiRestaurant';
 import {
   calcMinutesLeft,
@@ -9,32 +9,22 @@ import {
   formatDate,
 } from '../../utils/helpers';
 import OrderItem from './OrderItem';
-
-interface CartItem {
-  id: string;
-  addIngredients: string[];
-  removeIngredients: string[];
-  pizzaId: number;
-  name: string;
-  quantity: number;
-  unitPrice: number;
-  totalPrice: number;
-}
-
-interface Order {
-  id?: string;
-  customer?: string;
-  estimatedDelivery?: string;
-  orderPrice?: number;
-  priority?: boolean;
-  priorityPrice?: number;
-  status?: string;
-  cart: CartItem[];
-  phone?: string;
-}
+import { OrderType, Pizza } from '../../utils/types';
+import { useEffect } from 'react';
+import UpdateOrder from './UpdateOrder';
 
 function Order() {
   const order = useLoaderData();
+
+  const fetcher = useFetcher();
+
+  useEffect(
+    function () {
+      if (!fetcher.data && fetcher.state === 'idle') fetcher.load('/menu');
+    },
+    [fetcher],
+  );
+
   // Everyone can search for all orders, so for privacy reasons we're gonna gonna exclude names or address, these are only for the restaurant staff
   const {
     id,
@@ -44,7 +34,7 @@ function Order() {
     orderPrice,
     estimatedDelivery,
     cart,
-  } = order as Order;
+  } = order as OrderType;
 
   const deliveryIn = calcMinutesLeft(estimatedDelivery as string);
 
@@ -80,7 +70,15 @@ function Order() {
 
       <ul className="divide-y divide-stone-200 border-b border-t">
         {cart.map((item) => (
-          <OrderItem item={item} key={item.id} />
+          <OrderItem
+            item={item}
+            key={item.pizzaId}
+            isLoadingIngredients={fetcher.state === 'loading'}
+            ingredients={
+              fetcher?.data?.find((el: Pizza) => el.id === item.pizzaId)
+                ?.ingredients ?? []
+            }
+          />
         ))}
       </ul>
 
@@ -98,6 +96,7 @@ function Order() {
           {formatCurrency((orderPrice as number) + (priorityPrice as number))}
         </p>
       </div>
+      {!priority && <UpdateOrder order={order as OrderType} />}
     </div>
   );
 }

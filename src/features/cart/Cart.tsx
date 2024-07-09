@@ -1,15 +1,15 @@
 import LinkButton from '../../ui/LinkButton';
 import Button from '../../ui/Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { State } from '../user/Username';
-import { CartItemType, clearCart, getCart } from './cartSlice';
+import { clearCart, getCart } from './cartSlice';
 import CartItem from './CartItem';
 import EmptyCart from './EmptyCart';
+import { CartItemType, UserState } from '../../utils/types';
 
 function Cart() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const cart = useSelector(getCart);
-  const username = useSelector((state: State) => state.user.username);
+  const username = useSelector((state: UserState) => state.user.username);
   const dispatch = useDispatch();
 
   if (!cart.length) return <EmptyCart />;

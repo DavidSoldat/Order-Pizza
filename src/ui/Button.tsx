@@ -1,8 +1,5 @@
 import { Link } from 'react-router-dom';
-
-interface Styles {
-  [key: string]: string;
-}
+import { Styles } from '../utils/types';
 
 export default function Button({
   children,

@@ -4,17 +4,7 @@ import { formatCurrency } from '../../utils/helpers';
 import { addItem, getCurrentQuantityById } from '../cart/cartSlice';
 import DeleteItem from '../cart/DeleteItem';
 import UpdateItemQuantity from '../cart/UpdateItemQuantity';
-
-interface PizzaProp {
-  pizza: {
-    id: number;
-    name: string;
-    unitPrice: number;
-    ingredients: string[];
-    soldOut: boolean;
-    imageUrl: string;
-  };
-}
+import { PizzaProp } from '../../utils/types';
 
 function MenuItem({ pizza }: PizzaProp) {
   const { id, name, unitPrice, ingredients, soldOut, imageUrl } = pizza;

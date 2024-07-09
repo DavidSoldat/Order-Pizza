@@ -1,17 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice } from '@reduxjs/toolkit';
+import { CartState } from '../../utils/types';
 
-export interface CartItemType {
-  pizzaId: number;
-  name: string;
-  quantity: number;
-  unitPrice: number;
-  totalPrice: number;
-}
-
-export interface CartState {
-  cart: CartItemType[];
-}
 const initialState: CartState = {
   cart: [],
 };

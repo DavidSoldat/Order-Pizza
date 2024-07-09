@@ -1,13 +1,8 @@
 import { useSelector } from 'react-redux';
-
-export interface State {
-  user: {
-    username: string;
-  };
-}
+import { UserState } from '../../utils/types';
 
 export default function Username() {
-  const username = useSelector((state: State) => state.user.username);
+  const username = useSelector((state: UserState) => state.user.username);
 
   if (!username) return null;
 

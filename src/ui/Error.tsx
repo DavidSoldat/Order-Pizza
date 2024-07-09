@@ -1,12 +1,6 @@
-import { useRouteError } from "react-router-dom";
-import LinkButton from "./LinkButton";
-
-interface RouteError {
-  status: number;
-  data: string;
-  statusText: string;
-  message?: string;
-}
+import { useRouteError } from 'react-router-dom';
+import LinkButton from './LinkButton';
+import { RouteError } from '../utils/types';
 
 function Error() {
   const error = useRouteError() as RouteError;

@@ -1,15 +1,7 @@
 import { useLoaderData } from 'react-router-dom';
 import { getMenu } from '../../services/apiRestaurant';
 import MenuItem from './MenuItem';
-
-interface Pizza {
-  id: number;
-  imageUrl: string;
-  ingredients: string[];
-  name: string;
-  soldOut: boolean;
-  unitPrice: number;
-}
+import { Pizza } from '../../utils/types';
 
 function Menu() {
   const menu = useLoaderData() as Pizza[];
